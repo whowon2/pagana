@@ -1,7 +1,14 @@
 services:
-  api:
+  server:
     build:
       context: ./server
 
     ports:
       - 4000:4000
+
+  client:
+    build:
+      context: ./client
+
+    ports:
+      - 3000:3000
