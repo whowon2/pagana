@@ -24,11 +24,6 @@ export function Header() {
           </div>
 
           <div className="flex items-center gap-4">
-            {session?.user && (
-              <Button variant="link" asChild className="-mx-3">
-                <Link href="/my-tickets">My Tickets</Link>
-              </Button>
-            )}
             {session?.user ? (
               <SignOutButton />
             ) : (

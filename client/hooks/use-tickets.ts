@@ -1,5 +1,12 @@
 import { useQuery } from "@tanstack/react-query";
 
+export type Ticket = {
+  id: string;
+  department: string | null;
+  status: "OPEN" | "TRANSFERRED" | "CLOSED";
+  createdAt: string;
+};
+
 export const useTickets = () =>
   useQuery({
     queryKey: ["tickets"],
@@ -12,11 +19,12 @@ export const useTickets = () =>
               "Content-Type": "application/json",
             },
             credentials: "include",
+            cache: "no-cache",
           },
         );
 
         const data = await response.json();
-        return data;
+        return data as Ticket[];
       } catch (error) {
         console.error("Error fetching tickets:", error);
         throw error;

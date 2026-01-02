@@ -1,6 +1,6 @@
 "use client";
 
-import { Session } from "better-auth";
+import { Session, User } from "better-auth";
 import { Button } from "./ui/button";
 import { PlusCircle } from "lucide-react";
 import { useTickets } from "@/hooks/use-tickets";
@@ -8,17 +8,19 @@ import { useTickets } from "@/hooks/use-tickets";
 interface ChatSidebarProps {
   onSelectTicket: (ticketId: string | null) => void;
   currentTicketId: string | null;
-  session: Session;
+  user: User;
 }
 
 export function ChatSideBar({
   onSelectTicket,
   currentTicketId,
-  session,
+  user,
 }: ChatSidebarProps) {
   const { data: tickets, isPending } = useTickets();
 
   if (isPending) return <div>Loading...</div>;
+
+  if (!tickets) return <div>No tickets found</div>;
 
   return (
     <aside className="w-64 bg-gray-50 border-r border-gray-200 h-screen flex flex-col">
@@ -67,10 +69,10 @@ export function ChatSideBar({
       <div className="p-4 border-t border-gray-200">
         <div className="flex items-center gap-3">
           <div className="w-8 h-8 rounded-full bg-blue-600 flex items-center justify-center text-white text-xs">
-            {session?.user?.name?.charAt(0) || "U"}
+            {user.name.charAt(0) || "U"}
           </div>
           <div className="text-sm">
-            <p className="font-medium">{session?.user?.name}</p>
+            <p className="font-medium">{user.name}</p>
             <p className="text-xs text-gray-500">Online</p>
           </div>
         </div>
