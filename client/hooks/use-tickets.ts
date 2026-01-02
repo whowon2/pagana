@@ -6,7 +6,7 @@ export const useTickets = () =>
     queryFn: async () => {
       try {
         const response = await fetch(
-          `${process.env.NEXT_PUBLIC_API_URL}/tickets`,
+          `${process.env.NEXT_PUBLIC_API_URL}/api/tickets`,
           {
             headers: {
               "Content-Type": "application/json",
