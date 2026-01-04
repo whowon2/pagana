@@ -1,4 +1,4 @@
-import { eq } from "drizzle-orm";
+import { desc, eq } from "drizzle-orm";
 import { db } from "../lib/db";
 import { tickets } from "../lib/db/schema";
 
@@ -12,6 +12,7 @@ export class TicketsRepository {
   async findAll(input: { userId: string }) {
     return await db.query.tickets.findMany({
       where: eq(tickets.userId, input.userId),
+      orderBy: [desc(tickets.createdAt)],
     });
   }
 
