@@ -2,6 +2,8 @@
 
 import { Bot, CheckCheck, Send } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
+import { Input } from "./ui/input";
+import { Button } from "./ui/button";
 
 interface Message {
   role: "user" | "model" | "system";
@@ -123,11 +125,11 @@ export function ChatArea({ ticketId, onTicketCreated }: ChatAreaProps) {
   };
 
   return (
-    <div className="flex-1 flex flex-col h-screen bg-white">
-      <header className="h-16 border-b flex items-center px-6 justify-between bg-white">
+    <div className="flex-1 flex flex-col h-screen">
+      <header className="h-16 border-b flex items-center px-6 justify-between">
         <div>
           <h1 className="font-semibold text-lg">Support Agent AI</h1>
-          <p className="text-xs text-gray-500">
+          <p className="text-xs">
             {ticketId ? `Ticket #${ticketId.slice(0, 8)}` : "New Conversation"}
           </p>
         </div>
@@ -139,10 +141,10 @@ export function ChatArea({ ticketId, onTicketCreated }: ChatAreaProps) {
       </header>
 
       {/* Messages List */}
-      <div className="flex-1 overflow-y-auto p-6 space-y-6 bg-gray-50">
+      <div className="flex-1 overflow-y-auto p-6 space-y-6">
         {messages.length === 0 && !loading && (
-          <div className="h-full flex flex-col items-center justify-center text-gray-400">
-            <Bot size={48} className="mb-4 text-gray-300" />
+          <div className="h-full flex flex-col items-center justify-center">
+            <Bot size={48} className="mb-4" />
             <p>How can I help you today?</p>
           </div>
         )}
@@ -155,14 +157,14 @@ export function ChatArea({ ticketId, onTicketCreated }: ChatAreaProps) {
             <div
               className={`max-w-[70%] p-4 rounded-2xl shadow-sm text-sm ${
                 msg.role === "user"
-                  ? "bg-black text-white rounded-br-none"
+                  ? "rounded-br-none"
                   : msg.role === "system"
-                    ? "bg-yellow-50 border border-yellow-200 text-yellow-800 w-full max-w-full text-center"
-                    : "bg-white border border-gray-100 text-gray-800 rounded-bl-none"
+                    ? "border w-full max-w-full text-center"
+                    : "border rounded-bl-none"
               }`}
             >
               {msg.role !== "user" && msg.role !== "system" && (
-                <div className="flex items-center gap-2 mb-2 text-xs font-bold text-gray-400 uppercase">
+                <div className="flex items-center gap-2 mb-2 text-xs font-bold uppercase">
                   <Bot size={12} /> Support Agent
                 </div>
               )}
@@ -172,7 +174,7 @@ export function ChatArea({ ticketId, onTicketCreated }: ChatAreaProps) {
         ))}
         {loading && (
           <div className="flex justify-start">
-            <div className="bg-white p-4 rounded-2xl rounded-bl-none shadow-sm border border-gray-100">
+            <div className="p-4 rounded-2xl rounded-bl-none shadow-sm border border-gray-100">
               <span className="animate-pulse text-gray-400 text-sm">
                 Typing...
               </span>
@@ -183,36 +185,35 @@ export function ChatArea({ ticketId, onTicketCreated }: ChatAreaProps) {
       </div>
 
       {transferData ? (
-        <div className="p-6 bg-green-50 border-t border-green-100 text-center">
-          <CheckCheck className="mx-auto text-green-600 mb-2" size={32} />
-          <h3 className="font-bold text-green-900">Transfer Complete</h3>
-          <p className="text-sm text-green-800 mb-2">
+        <div className="p-6 border-t text-center">
+          <CheckCheck className="mx-auto text-green-500 mb-2" size={32} />
+          <h3 className="font-bold text-green-600">Transfer Complete</h3>
+          <p className="text-sm text-green-700 mb-2">
             You are now in queue for <strong>{transferData.dept}</strong>.
           </p>
-          <p className="text-xs text-green-700 italic max-w-md mx-auto">
+          <p className="text-xs text-green-600 italic max-w-md mx-auto">
             "Summary sent to agent: {transferData.summary}"
           </p>
         </div>
       ) : (
-        <div className="p-4 bg-white border-t border-gray-200">
+        <div className="p-4 border-t">
           <div className="relative flex items-center gap-2 max-w-4xl mx-auto">
-            <input
-              type="text"
+            <Input
               ref={inputRef}
               value={input}
               onChange={(e) => setInput(e.target.value)}
               onKeyDown={(e) => e.key === "Enter" && handleSend()}
               placeholder="Type your message..."
               disabled={loading}
-              className="flex-1 bg-gray-100 border-0 focus:ring-2 ring-black/10 rounded-xl px-4 py-3 outline-none transition-all disabled:opacity-50"
+              className=""
             />
-            <button
+            <Button
               onClick={handleSend}
               disabled={loading || !input.trim()}
-              className="bg-black text-white p-3 rounded-xl hover:bg-gray-800 disabled:opacity-50 disabled:cursor-not-allowed transition-all"
+              className=""
             >
               <Send size={18} />
-            </button>
+            </Button>
           </div>
         </div>
       )}
