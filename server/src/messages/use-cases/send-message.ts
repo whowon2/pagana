@@ -55,7 +55,7 @@ export class SendMessageUseCase {
       model: "gemini-2.5-flash",
       config: {
         systemInstruction: SYSTEM_INSTRUCTION,
-        tools: [{ functionDeclarations: [transferTool] }], // Note the nesting
+        tools: [{ functionDeclarations: [transferTool] }],
       },
       contents: [
         ...history.map((msg) => ({

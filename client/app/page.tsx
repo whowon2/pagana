@@ -20,7 +20,11 @@ export default function Home() {
     queryClient.invalidateQueries({ queryKey: ["tickets"] });
   };
 
-  const { data: session } = authClient.useSession();
+  const { data: session, isPending } = authClient.useSession();
+
+  if (isPending) {
+    return null;
+  }
 
   if (!session) {
     redirect("/auth/login");

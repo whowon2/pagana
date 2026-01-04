@@ -5,6 +5,8 @@ import { auth } from "./lib/auth";
 import { db } from "./lib/db";
 import { ticketsController } from "./tickets/controller";
 import { messagesController } from "./messages/controller";
+import { websocket } from "hono/bun";
+import { socketApp } from "./socket";
 
 const app = new Hono();
 
@@ -22,8 +24,10 @@ app.on(["POST", "GET"], "/api/auth/*", (c) => auth.handler(c.req.raw));
 
 app.route("/api/tickets", ticketsController);
 app.route("/api/messages", messagesController);
+app.route("/api/ws", socketApp);
 
 export default {
   port: 4000,
   fetch: app.fetch,
+  websocket,
 };
