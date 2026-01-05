@@ -1,12 +1,21 @@
 import { Hono } from "hono";
+import { websocket } from "hono/bun";
 import { cors } from "hono/cors";
 import { logger } from "hono/logger";
 import { auth } from "./lib/auth";
-import { db } from "./lib/db";
-import { ticketsController } from "./tickets/controller";
 import { messagesController } from "./messages/controller";
-import { websocket } from "hono/bun";
 import { socketApp } from "./socket";
+import { ticketsController } from "./tickets/controller";
+import { migrate } from "drizzle-orm/mysql2/migrator";
+import { db } from "./lib/db";
+
+console.log("Running migrations...");
+
+migrate(db, { migrationsFolder: "./drizzle" })
+  .catch((error) => {
+    console.error("Migration failed:", error);
+  })
+  .then(() => console.log("Migrations completed."));
 
 const app = new Hono();
 
