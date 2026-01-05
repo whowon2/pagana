@@ -70,8 +70,6 @@ export function ChatArea({ ticketId, onTicketCreated }: ChatAreaProps) {
     };
 
     ws.onerror = (error) => {
-      console.log(error);
-      console.error("WebSocket Error:", error);
       setLoading(false);
     };
 
