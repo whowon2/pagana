@@ -165,3 +165,10 @@ O backend expõe as seguintes rotas principais:
 * **WebSockets:** Utilizados para uma experiência de chat fluida e em tempo real.
 * **Docker:** Ambiente totalmente containerizado para fácil reprodução.
 * **Monorepo:** Estrutura organizada separando responsabilidades de cliente e servidor.
+
+## 🌐 Deploy em Produção
+
+O projeto esta disponível para testes nos seguintes endereços:
+
+* **Frontend (Vercel):** [https://pagana.vercel.app](https://pagana.vercel.app)
+* **Backend (Railway):** [https://pagana-production.up.railway.app](https://pagana-production.up.railway.app)
