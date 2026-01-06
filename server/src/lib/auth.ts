@@ -10,4 +10,16 @@ export const auth = betterAuth({
     provider: "mysql", // or "mysql", "sqlite"
   }),
   trustedOrigins: ["http://localhost:3000", "https://pagana.vercel.app"],
+  baseURL: process.env.BETTER_AUTH_BASE_URL,
+  advanced: {
+    crossSubDomainCookies: {
+      enabled: false,
+    },
+    // 2. Force these attributes to allow cross-site cookies
+    defaultCookieAttributes: {
+      secure: true,
+      sameSite: "none",
+      httpOnly: true,
+    },
+  },
 });

@@ -12,14 +12,13 @@ type Tab = "signin" | "signup";
 
 export default function LoginPage() {
   const router = useRouter();
-  const [email, setEmail] = useState("");
   const [selectedTab, setSelectedTab] = useState<Tab>("signin");
 
-  useEffect(() => {
-    authClient.getSession().then((session) => {
-      if (session.data != null) router.push("/");
-    });
-  }, [router]);
+  const { data: session } = authClient.useSession();
+
+  if (session) {
+    router.push("/");
+  }
 
   return (
     <div className="flex w-full flex-col flex-1 items-center justify-center gap-4 p-4">

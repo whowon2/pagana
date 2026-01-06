@@ -17,16 +17,38 @@ migrate(db, { migrationsFolder: "./drizzle" })
   })
   .then(() => console.log("Migrations completed."));
 
-const app = new Hono();
+const app = new Hono<{
+  Variables: {
+    user: typeof auth.$Infer.Session.user | null;
+    session: typeof auth.$Infer.Session.session | null;
+  };
+}>();
 
 app.use(logger());
 app.use(
   "*",
   cors({
     origin: ["http://localhost:3000", "https://pagana.vercel.app"],
+    allowHeaders: ["Content-Type", "Authorization"],
+    allowMethods: ["POST", "GET", "OPTIONS"],
+    exposeHeaders: ["Content-Length"],
+    maxAge: 600,
     credentials: true,
   }),
 );
+
+app.use("*", async (c, next) => {
+  const session = await auth.api.getSession({ headers: c.req.raw.headers });
+  if (!session) {
+    c.set("user", null);
+    c.set("session", null);
+    await next();
+    return;
+  }
+  c.set("user", session.user);
+  c.set("session", session.session);
+  await next();
+});
 
 // Better Auth
 app.on(["POST", "GET"], "/api/auth/*", (c) => auth.handler(c.req.raw));

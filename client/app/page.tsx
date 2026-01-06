@@ -3,13 +3,27 @@
 import { ChatArea } from "@/components/chat";
 import { ChatSideBar } from "@/components/chat-sidebar";
 import { authClient } from "@/lib/auth-client";
-import { QueryClient, useQueryClient } from "@tanstack/react-query";
+import { useQueryClient } from "@tanstack/react-query";
 import { redirect } from "next/navigation";
 import { useState } from "react";
 
 export default function Home() {
   const queryClient = useQueryClient();
   const [currentTicketId, setCurrentTicketId] = useState<string | null>(null);
+
+  const { data: session, isPending } = authClient.useSession();
+
+  if (isPending) {
+    return <div>loading</div>;
+  }
+
+  if (!session) {
+    return (
+      <div>
+        <pre>{JSON.stringify(session, null, 2)}</pre>
+      </div>
+    );
+  }
 
   const handleSelectTicket = (ticketId: string | null) => {
     setCurrentTicketId(ticketId);
@@ -19,16 +33,6 @@ export default function Home() {
     setCurrentTicketId(newId);
     queryClient.invalidateQueries({ queryKey: ["tickets"] });
   };
-
-  const { data: session, isPending } = authClient.useSession();
-
-  if (isPending) {
-    return null;
-  }
-
-  if (!session) {
-    redirect("/auth/login");
-  }
 
   return (
     <div className="flex h-screen w-full overflow-hidden">
