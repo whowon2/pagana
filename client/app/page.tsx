@@ -18,11 +18,7 @@ export default function Home() {
   }
 
   if (!session) {
-    return (
-      <div>
-        <pre>{JSON.stringify(session, null, 2)}</pre>
-      </div>
-    );
+    redirect("/auth/login");
   }
 
   const handleSelectTicket = (ticketId: string | null) => {
